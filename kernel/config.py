@@ -26,12 +26,17 @@ class Config:
         # Author, meta (optional)
         # then go for "search" field
         # analyze in loop, sub elements as well
-        # while analyzing search kernel. do:
+        # while analyzing search modules do:
         # * Check their existance
         # * Check by using check() function
         # * Do check_arguments() function
         self.author = config['author']
-        self.meta = config['meta']
+
+        # Meta key is optional
+        try:
+            self.meta = config['meta']
+        except KeyError:
+            self.meta = ""
         
         Output.do("Author: %s" % self.author)
 
@@ -56,7 +61,7 @@ class Config:
             for sub in module_config['sub']:
                 analysis = self.analyze_module(sub)
         except KeyError:
-            Output.log("No subkernel.detected")
+            Output.log("No submodules detected")
 
         return analysis
 
