@@ -3,7 +3,7 @@
 from termcolor import colored
 from time import strftime, localtime
 from optparse import OptionParser
-from modules.output import Output, OutputResult
+from kernel.output import Output, OutputResult
 import sys
 
 class Kernel:
@@ -32,7 +32,7 @@ class Kernel:
             Output.date_format = options.date_format
 
         Output.log("Start program")
-        Output.do("Starting forisearch version %s" % _version)
+        Output.do("Starting Desefu version %s" % _version)
 
         return (options, args)
 

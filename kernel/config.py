@@ -1,5 +1,5 @@
-from modules.output import Output, OutputResult
-from modules.kernel import Kernel
+from kernel.output import Output, OutputResult
+from kernel.kernel import Kernel
 import sys
 import ruamel.yaml
 
@@ -26,7 +26,7 @@ class Config:
         # Author, meta (optional)
         # then go for "search" field
         # analyze in loop, sub elements as well
-        # while analyzing search modules, do:
+        # while analyzing search kernel. do:
         # * Check their existance
         # * Check by using check() function
         # * Do check_arguments() function
@@ -56,7 +56,7 @@ class Config:
             for sub in module_config['sub']:
                 analysis = self.analyze_module(sub)
         except KeyError:
-            Output.log("No submodules detected")
+            Output.log("No subkernel.detected")
 
         return analysis
 

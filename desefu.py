@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 from optparse import OptionParser
 from colorama import init
-from modules.output import Output, OutputResult
-from modules.config import Config
-from modules.kernel import Kernel
+from kernel.output import Output, OutputResult
+from kernel.config import Config
+from kernel.kernel import Kernel
 
 _version = "0.1a"
 _choices = ['json', 'xml', 'csv', 'html']
