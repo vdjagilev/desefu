@@ -1,6 +1,7 @@
 from termcolor import colored
 from time import strftime, localtime
 
+
 class OutputResult:
     OK = ('+', 'green', ['bold'])
     Fail = ('-', 'red', ['bold'])
@@ -10,6 +11,7 @@ class OutputResult:
     Error = ('ERR', 'red', ['bold'])
     Log = ('LOG', None, ['bold'])
 
+
 class Output:
     logging = False
     quiet = False
@@ -18,7 +20,8 @@ class Output:
     log_file = None
     file_resource = None
 
-    def do(message, result=OutputResult.Info, use_time=True):
+    @staticmethod
+    def do(message: str, result: tuple = OutputResult.Info, use_time: bool = True):
         if Output.log_file and Output.file_resource is None:
             Output.file_resource = open(Output.log_file, 'w+')
 
@@ -39,13 +42,14 @@ class Output:
                 Output.file_resource.write('[%s] ' % strftime(Output.date_format, localtime()))
 
         print(message)
-        
+
         if Output.log_file:
             Output.file_resource.write(message + '\n')
 
-    def log(message):
+    @staticmethod
+    def log(message: str):
         if Output.quiet:
             return
 
-        if Output.logging == True:
+        if Output.logging:
             Output.do(message, result=OutputResult.Log)

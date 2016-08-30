@@ -3,25 +3,26 @@ from kernel.kernel import Kernel
 import sys
 import ruamel.yaml
 
-class Config:
 
+class Config:
     def __init__(self, config_file):
         self.config_file = config_file
 
         try:
             self.file_resource = open(config_file, 'r')
         except:
-            Output.do("Failed to open config file \"%s\", unexpected error: \"%s\"" % (config_file, sys.exc_info()[0]), OutputResult.Fail)
+            Output.do("Failed to open config file \"%s\", unexpected error: \"%s\"" % (config_file, sys.exc_info()[0]),
+                      OutputResult.Fail)
             Kernel.end()
 
         Output.do("File was successfully opened", OutputResult.OK)
 
     def analyze(self):
         Output.do("Starting config file analysis")
-        
+
         read_data = self.file_resource.read();
         config = ruamel.yaml.load(read_data, ruamel.yaml.RoundTripLoader)
-        
+
         # Starting to check for fields
         # Author, meta (optional)
         # then go for "search" field
@@ -37,7 +38,7 @@ class Config:
             self.meta = config['meta']
         except KeyError:
             self.meta = ""
-        
+
         Output.do("Author: %s" % self.author)
 
         analysis = False
@@ -46,14 +47,14 @@ class Config:
             Output.log("Analyzing record_id: %s" % record_id)
             for module in config['search'][record_id]:
                 analysis = self.analyze_module(module)
-        
+
         return analysis
 
     def analyze_module(self, module_config):
         analysis = False
         Output.log("Analyzing module: %s" % module_config['mod'])
         Output.log("Analyzing arguments: %s" % module_config['args'])
-        
+
         try:
             module_config['sub']
             Output.log("Analyzing submodule")
