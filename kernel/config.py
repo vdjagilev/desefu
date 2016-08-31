@@ -92,7 +92,7 @@ class Config:
             Output.log("Analyzing submodule")
 
             for sub in module_config['sub']:
-                analysis = self.analyze_module(sub, 'search')
+                analysis = self.analyze_module(sub, module_type)
         except KeyError:
             Output.log("No submodules detected")
 
