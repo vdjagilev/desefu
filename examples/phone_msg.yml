@@ -1,0 +1,26 @@
+author: Vsevolod Djagilev
+meta:
+  description: |
+  This config file is specifically needed to search for message databases on
+  phone. It traverses all possible files (mainly it's SQLite databases)
+  and extracts the data
+
+search:
+  sqlite_dbs:
+    -
+      mod: Extension
+      args: ['', 'sqlite', 'sqlite3', 'db']
+    -
+      mod: FileHeader
+      args:
+        types: ['sqlite3']
+    -
+      mod: Dictionary
+      args:
+        - '/path/to/dictionary_words.txt'
+
+extract:
+  sqlite_dbs:
+    -
+      mod: Sqlite
+      # ToDo: Extract, how
