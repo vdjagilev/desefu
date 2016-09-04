@@ -13,16 +13,20 @@ class Config:
             self.file_resource = open(config_file, 'r')
         except:
             Output.do("Failed to open config file \"%s\", unexpected error: \"%s\"" % (config_file, sys.exc_info()[0]),
-                      OutputResult.Fail)
+                      OutputResult.Error)
             Kernel.end()
-
-        Output.do("File was successfully opened", OutputResult.OK)
 
     def analyze(self):
         Output.do("Starting config file analysis")
 
         read_data = self.file_resource.read()
-        config = ruamel.yaml.load(read_data, ruamel.yaml.RoundTripLoader)
+
+        try:
+            config = ruamel.yaml.load(read_data, ruamel.yaml.RoundTripLoader)
+        except:
+            Output.do("Could not parse config file due to error: %s" % sys.exc_info()[0], OutputResult.Error)
+            Output.log(sys.exc_info())
+            Kernel.end()
 
         # Starting to check for fields
         # Author, meta (optional)
@@ -80,8 +84,8 @@ class Config:
 
 
         except (SystemError, ImportError, AttributeError) as e:
-            Output.do("Could not load module \"%s\" due to errors. Check out log" % module_config['mod'],
-                      result=OutputResult.Fail)
+            Output.do("Could not load module \"%s\" due to errors." % module_config['mod'],
+                      result=OutputResult.Error)
             Output.log(e)
             Kernel.end()
 

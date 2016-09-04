@@ -3,6 +3,7 @@
 from optparse import OptionParser
 
 from kernel.output import Output, OutputResult
+import sys
 
 
 class Kernel:
@@ -34,7 +35,6 @@ class Kernel:
         if options.date_format is not None:
             Output.date_format = options.date_format
 
-        Output.log("Start program")
         Output.do("Starting Desefu version %s" % _version)
 
         return options, args
@@ -42,4 +42,4 @@ class Kernel:
     @staticmethod
     def end():
         Output.do("Program end", result=OutputResult.Info)
-        exit()
+        sys.exit()
