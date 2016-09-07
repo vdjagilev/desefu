@@ -62,7 +62,7 @@ class Config:
         for record_id in config['search']:
             Output.log("Analyzing record_id: %s" % record_id)
             for module in config['search'][record_id]:
-                analysis = self.analyze_module(module, 'search')
+                analysis = self.analyze_module(module, 'modules')
 
         return analysis
 
@@ -72,7 +72,7 @@ class Config:
 
         try:
             mod_import = importlib.import_module(module_type + '.' + module_config['mod'])
-            mod_class = getattr(mod_import, module_config['mod'])
+            mod_class = getattr(mod_import, module_config['mod'].split('.').pop())
 
             # Module object initialization
             mod = mod_class()
