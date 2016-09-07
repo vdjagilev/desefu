@@ -8,19 +8,19 @@ meta:
 search:
   sqlite_dbs:
     -
-      mod: Extension
+      mod: file.Extension
       args: ['', 'sqlite', 'sqlite3', 'db']
     -
-      mod: FileHeader
+      mod: file.FileHeader
       args:
         types: ['sqlite3']
     -
-      mod: Dictionary
+      mod: search.Dictionary
       args:
         - '/path/to/dictionary_words.txt'
       sub:
         -
-          mod: SqliteDatabase
+          mod: file.type.SqliteDatabase
           extract:
             columns: [result, timestamps] # Result columns and tries to get timestamps
             order:
@@ -30,5 +30,9 @@ search:
 
 extract:
   sqlite_dbs:
-    -
-      mod: Sqlite
+    format:
+      - csv
+      - html
+      - xlsx
+      - pdf
+    output: report_result # By default timestamp.{format}

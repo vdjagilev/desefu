@@ -6,13 +6,13 @@ meta:
 search:
     words_search_id:
         -
-            mod: Dictionary
+            mod: search.Dictionary
             args:
                 - '/path/to/dictionary/slang01.txt'
                 - '/path/to/dictionary/another_slang01.txt'
             sub:
                 -
-                    mod: Regex
+                    mod: search.Regex
                     filter: false
                     args:
                         predefined_types:
@@ -20,13 +20,13 @@ search:
                             - ipv4
                             - ipv6
                 -
-                    mod: Language
+                    mod: search.Language
                     filter: false
                     args:
                         - 'ru'
                         - 'en'
         -
-            mod: Extension
+            mod: file.Extension
             args:
                 - 'doc'
                 - 'docx'
@@ -34,13 +34,13 @@ search:
                 - 'xlsx'
     images_search_id:
         -
-            mod: FileHeader
+            mod: file.FileHeader
             args:
                 types:
                     - 'jpg'
                     - 'png'
                     - 'gif'
         -
-            mod: DetectColor
+            mod: image.DetectColor
             args:
                 - 'whatever'
