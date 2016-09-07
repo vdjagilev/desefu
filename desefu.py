@@ -26,12 +26,12 @@ if __name__ == '__main__':
     
     try:
         args[1]
-        Output.do("Config file is: \"%s\"" % args[1])
+        Output.do("Evidence root folder is: \"%s\"" % args[1])
     except IndexError:
         Output.do("No evidence directory root folder specified. Exiting", result=OutputResult.Fail)
         Kernel.end()
 
-    config = Config(args[0])
+    config = Config(args[0], args[1])
     analysis_result = config.analyze()
 
     if not analysis_result:

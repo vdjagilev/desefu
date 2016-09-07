@@ -3,17 +3,28 @@ from kernel.kernel import Kernel
 import sys
 import ruamel.yaml
 import importlib
+import os
 
 
 class Config:
-    def __init__(self, config_file):
+    def __init__(self, config_file, evidence_folder):
         self.config_file = config_file
+        self.evidence_folder = evidence_folder
 
         try:
             self.file_resource = open(config_file, 'r')
         except:
             Output.do("Failed to open config file \"%s\", unexpected error: \"%s\"" % (config_file, sys.exc_info()[0]),
                       OutputResult.Error)
+            Kernel.end()
+
+        try:
+            if not os.path.isdir(evidence_folder):
+                Output.do("Provided evidence folder \"%s\" is not a folder or does not exists" % evidence_folder,
+                          OutputResult.Error)
+                Kernel.end()
+        except PermissionError:
+            Output.do("There is no permission reading directory \"%s\"" % evidence_folder, OutputResult.Error)
             Kernel.end()
 
     def analyze(self):
