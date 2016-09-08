@@ -1,9 +1,12 @@
 # Kernel module
 # =============
+import importlib
 from optparse import OptionParser
 
 from kernel.output import Output, OutputResult
 import sys
+
+from modules import AbstractModule
 
 
 class Kernel:
@@ -19,6 +22,7 @@ class Kernel:
         parser.add_option("--date-format", default=None,
                           help="Date format which is used for all output which is made to console, all required symbols can be found at https://docs.python.org/3.5/library/time.html#time.strftime. \nBy default locale appropriate time representation is done.")
         parser.add_option("--save-output", default=None, help="Store output in a log file")
+        parser.add_option("--module-info", default=None, help="Prints out module information")
 
         (options, args) = parser.parse_args()
 
@@ -43,3 +47,22 @@ class Kernel:
     def end():
         Output.do("Program end", result=OutputResult.Info)
         sys.exit()
+
+    @staticmethod
+    def get_module(type: str, name: str) -> AbstractModule:
+        # Module import & Initialization
+        try:
+            mod_import = importlib.import_module(type + '.' + name)
+            mod_class = getattr(mod_import, name.split('.').pop())
+
+            mod = mod_class()
+        except ImportError as e:
+            Output.do("Could not import module \"%s\"" % name, OutputResult.Error)
+            Output.log(e)
+            Kernel.end()
+        except TypeError as e:
+            Output.do("Could not initialize module. Important functions are missing in module", OutputResult.Error)
+            Output.log(e)
+            Kernel.end()
+
+        return mod

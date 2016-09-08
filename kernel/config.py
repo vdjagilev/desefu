@@ -71,17 +71,7 @@ class Config:
         Output.log("Analyzing module: %s" % module_config['mod'])
 
         try:
-            mod_import = importlib.import_module(module_type + '.' + module_config['mod'])
-            mod_class = getattr(mod_import, module_config['mod'].split('.').pop())
-
-            # Module object initialization
-            try:
-                mod = mod_class()
-            except TypeError as e:
-                Output.do("Could not initialize module. Important functions are missing in module", OutputResult.Error)
-                Output.log(e)
-                Kernel.end()
-
+            mod = Kernel.get_module(module_type, module_config['mod'])
             mod_check = mod.check()
 
             if not mod_check:
@@ -99,7 +89,7 @@ class Config:
                 Kernel.end()
 
 
-        except (SystemError, ImportError, AttributeError) as e:
+        except (SystemError, AttributeError) as e:
             Output.do("Could not import module \"%s\" due to errors." % module_config['mod'],
                       result=OutputResult.Error)
             Output.log(e)

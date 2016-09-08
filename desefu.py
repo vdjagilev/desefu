@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from colorama import init
+from termcolor import colored
 
 from kernel.config import Config
 from kernel.kernel import Kernel
@@ -16,6 +17,18 @@ init()
 # Main method
 if __name__ == '__main__':
     (options, args) = Kernel.start(_version, _choices)
+
+    if options.module_info:
+        Output.do("Getting information about module %s" % options.module_info)
+        mod = Kernel.get_module('modules', options.module_info)
+        yes_str = colored("Yes", "green")
+        no_str = colored("No", "red")
+
+        print(mod.description())
+        print("[%s]\tFile filtering" % (yes_str if mod.is_filter_files() else no_str))
+        print("[%s]\tData collection" % (yes_str if mod.is_collect_data() else no_str))
+        print("[%s]\tExtract data options" % (yes_str if mod.is_extract_data() else no_str))
+        Kernel.end()
 
     try:
         args[0]
