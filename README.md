@@ -4,7 +4,9 @@ Desefu
 Digital evidence search-extract forensic utility.
 Used to narrow digital evidence search process and extract found data.
 
-# Installation
+# Installation and Requirements
+
+In order to make it run a recent version of Python is required (at least 3.4)
 
 ```
 # pip install -r requirements.txt

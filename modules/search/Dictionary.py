@@ -1,6 +1,8 @@
 from kernel.output import Output, OutputResult
+from modules import AbstractModule
 
-class Dictionary:
+
+class Dictionary(AbstractModule):
     def check(self):
         return True
 

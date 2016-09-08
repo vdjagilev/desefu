@@ -75,7 +75,12 @@ class Config:
             mod_class = getattr(mod_import, module_config['mod'].split('.').pop())
 
             # Module object initialization
-            mod = mod_class()
+            try:
+                mod = mod_class()
+            except TypeError as e:
+                Output.do("Could not initialize module. Important functions are missing in module", OutputResult.Error)
+                Output.log(e)
+                Kernel.end()
 
             mod_check = mod.check()
 
@@ -95,7 +100,7 @@ class Config:
 
 
         except (SystemError, ImportError, AttributeError) as e:
-            Output.do("Could not load module \"%s\" due to errors." % module_config['mod'],
+            Output.do("Could not import module \"%s\" due to errors." % module_config['mod'],
                       result=OutputResult.Error)
             Output.log(e)
             Kernel.end()
