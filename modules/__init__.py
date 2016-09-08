@@ -7,7 +7,7 @@ class AbstractModule(ABC):
         pass
 
     @abstractmethod
-    def check_arguments(self, args: list):
+    def check_arguments(self, args):
         pass
 
     # Gives information if module filtering files or not
