@@ -2,6 +2,12 @@ from abc import ABC, abstractmethod
 
 
 class AbstractModule(ABC):
+    def __init__(self):
+        self.is_sub_module = False
+        self.previous_module = None
+        self.parent_module = None
+        self.sibling_module_list = []
+
     @abstractmethod
     def check(self):
         pass

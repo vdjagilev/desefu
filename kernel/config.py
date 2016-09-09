@@ -10,6 +10,9 @@ class Config:
     def __init__(self, config_file, evidence_folder):
         self.config_file = config_file
         self.evidence_folder = evidence_folder
+        self.module_chain = []
+        self.author = None
+        self.meta = None
 
         try:
             self.file_resource = open(config_file, 'r')
@@ -53,7 +56,7 @@ class Config:
         try:
             self.meta = config['meta']
         except KeyError:
-            self.meta = ""
+            pass
 
         Output.do("Author: %s" % self.author)
 
