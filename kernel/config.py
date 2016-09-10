@@ -42,15 +42,11 @@ class Config:
             Output.log(sys.exc_info())
             Kernel.end()
 
-        # Starting to check for fields
-        # Author, meta (optional)
-        # then go for "search" field
-        # analyze in loop, sub elements as well
-        # while analyzing search modules do:
-        # * Check their existance
-        # * Check by using check() function
-        # * Do check_arguments() function
-        self.author = config['author']
+        try:
+            self.author = config['author']
+        except KeyError:
+            Output.do("Missing \"author\" value in config file", OutputResult.Error)
+            Kernel.end()
 
         # Meta key is optional
         try:
@@ -62,10 +58,17 @@ class Config:
 
         analysis = False
 
-        for record_id in config['search']:
-            Output.log("Analyzing record_id: %s" % record_id)
-            for module in config['search'][record_id]:
-                analysis = self.analyze_module(module, 'modules')
+        try:
+            for record_id in config['search']:
+                Output.log("Analyzing record_id: %s" % record_id)
+                for module in config['search'][record_id]:
+                    analysis = self.analyze_module(module, 'modules')
+        except KeyError:
+            Output.do("Error getting search entry from config file", OutputResult.Error)
+            Kernel.end()
+        except TypeError:
+            Output.do("Search entry does not contain any values", OutputResult.Error)
+            Kernel.end()
 
         return analysis
 
