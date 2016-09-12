@@ -1,3 +1,4 @@
+from kernel.module_chain import ModuleChain
 from kernel.output import Output, OutputResult
 from kernel.kernel import Kernel
 import sys
@@ -59,12 +60,24 @@ class Config:
         analysis = False
 
         try:
+            evidence_files = []
+            Output.do("Starting evidence folder scan")
+            for root, dir, files in os.walk(self.evidence_folder):
+                for file in files:
+                    evidence_files.append(os.path.join(root, file))
+
+            Output.do("Total amount of files: %d" % len(evidence_files))
+
             for record_id in config['search']:
+                mod_chain = ModuleChain()
+                mod_chain.files = evidence_files
+                mod_chain.id = record_id
+
                 Output.log("Analyzing record_id: %s" % record_id)
                 for module in config['search'][record_id]:
                     analysis = self.analyze_module(module, 'modules')
         except KeyError:
-            Output.do("Error getting search entry from config file", OutputResult.Error)
+            Output.do("Error getting \"search\" entry from config file", OutputResult.Error)
             Kernel.end()
         except TypeError:
             Output.do("Search entry does not contain any values", OutputResult.Error)
