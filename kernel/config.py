@@ -6,6 +6,8 @@ import ruamel.yaml
 import importlib
 import os
 
+from modules import AbstractModule
+
 
 class Config:
     def __init__(self, config_file, evidence_folder):
@@ -31,7 +33,10 @@ class Config:
             Output.do("There is no permission reading directory \"%s\"" % evidence_folder, OutputResult.Error)
             Kernel.end()
 
-    def analyze(self):
+    """
+    Get module chain list, for each search record
+    """
+    def analyze(self) -> list:
         Output.do("Starting config file analysis")
 
         read_data = self.file_resource.read()
@@ -57,7 +62,7 @@ class Config:
 
         Output.do("Author: %s" % self.author)
 
-        analysis = False
+        mod_chain_list = []
 
         try:
             evidence_files = []
@@ -74,8 +79,11 @@ class Config:
                 mod_chain.id = record_id
 
                 Output.log("Analyzing record_id: %s" % record_id)
-                for module in config['search'][record_id]:
-                    analysis = self.analyze_module(module, 'modules')
+                for module_record in config['search'][record_id]:
+                    mod = self.analyze_module(module_record, 'modules')
+                    mod_chain.modules.append(mod)
+
+                mod_chain_list.append(mod_chain)
         except KeyError:
             Output.do("Error getting \"search\" entry from config file", OutputResult.Error)
             Kernel.end()
@@ -83,10 +91,10 @@ class Config:
             Output.do("Search entry does not contain any values", OutputResult.Error)
             Kernel.end()
 
-        return analysis
+        return mod_chain_list
 
-    def analyze_module(self, module_config, module_type):
-        analysis = False
+    def analyze_module(self, module_config, module_type) -> AbstractModule:
+        mod = None
         Output.log("Analyzing module: %s" % module_config['mod'])
 
         try:
@@ -94,6 +102,7 @@ class Config:
             mod_check = mod.check()
 
             if not mod_check:
+                Output.do("Module check has failed.", OutputResult.Error)
                 Kernel.end()
 
             args = []
@@ -102,11 +111,12 @@ class Config:
             except KeyError:
                 pass
 
+            Output.log("Analyzing arguments: %s" % module_config['args'])
             mod_check_args = mod.check_arguments(args)
 
             if not mod_check_args:
+                Output.do("Error, arguments check have not been passed", OutputResult.Error)
                 Kernel.end()
-
 
         except (SystemError, AttributeError) as e:
             Output.do("Could not import module \"%s\" due to errors." % module_config['mod'],
@@ -114,18 +124,19 @@ class Config:
             Output.log(e)
             Kernel.end()
 
-        Output.log("Analyzing arguments: %s" % module_config['args'])
-
         try:
             module_config['sub']
             Output.log("Analyzing submodule")
 
             for sub in module_config['sub']:
-                analysis = self.analyze_module(sub, module_type)
+                sub_mod = self.analyze_module(sub, module_type)
+                mod.sibling_module_list.append(sub_mod)
+                sub_mod.parent_module = mod
+                sub_mod.is_sub_module = True
         except KeyError:
             Output.log("No submodules detected")
 
-        return analysis
+        return mod
 
     def close(self):
         if self.file_resource:

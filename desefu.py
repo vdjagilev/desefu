@@ -45,10 +45,18 @@ if __name__ == '__main__':
         Kernel.end()
 
     config = Config(args[0], args[1])
-    analysis_result = config.analyze()
+    module_chain_list = config.analyze()
 
-    if not analysis_result:
+    # After all analysis is done and config file has been parsed
+    # Run needed
+    config.close()
+
+    if len(module_chain_list) == 0:
+        Output.do("Module chain list is empty, there is no records in \"search\" field.", OutputResult.Fail)
         Kernel.end()
+
+    for mc in module_chain_list:
+        Output.log("Running module chain (ID: %s)" % mc.id)
 
     # Program END
 
