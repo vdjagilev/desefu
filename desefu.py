@@ -24,10 +24,15 @@ if __name__ == '__main__':
         yes_str = colored("Yes", "green")
         no_str = colored("No", "red")
 
+        print(options.module_info)
+        print("--------------------------------")
+        print("")
         print(mod.description())
+        print("")
         print("[%s]\tFile filtering" % (yes_str if mod.is_filter_files() else no_str))
         print("[%s]\tData collection" % (yes_str if mod.is_collect_data() else no_str))
         print("[%s]\tExtract data options" % (yes_str if mod.is_extract_data() else no_str))
+        print("")
         Kernel.end()
 
     try:
