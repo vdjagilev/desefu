@@ -66,3 +66,12 @@ class Kernel:
             Kernel.end()
 
         return mod
+
+    @staticmethod
+    def exec_search(module_chain: list) -> list:
+        for mc in module_chain:
+            Output.do("Running module chain: \"%s\"" % mc.id)
+            
+            for mod in mc.modules:
+                Output.do(mod)
+

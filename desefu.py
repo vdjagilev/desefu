@@ -55,8 +55,8 @@ if __name__ == '__main__':
         Output.do("Module chain list is empty, there is no records in \"search\" field.", OutputResult.Fail)
         Kernel.end()
 
-    for mc in module_chain_list:
-        Output.log("Running module chain (ID: %s)" % mc.id)
+    # Executing search operation
+    Kernel.exec_search(module_chain_list)
 
     # Program END
 
