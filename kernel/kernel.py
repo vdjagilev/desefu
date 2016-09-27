@@ -49,10 +49,10 @@ class Kernel:
         sys.exit()
 
     @staticmethod
-    def get_module(type: str, name: str) -> AbstractModule:
+    def get_module(module_type: str, name: str) -> AbstractModule:
         # Module import & Initialization
         try:
-            mod_import = importlib.import_module(type + '.' + name)
+            mod_import = importlib.import_module(module_type + '.' + name)
             mod_class = getattr(mod_import, name.split('.').pop())
 
             mod = mod_class()

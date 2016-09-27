@@ -81,6 +81,8 @@ class Config:
                 Output.log("Analyzing record_id: %s" % record_id)
                 for module_record in config['search'][record_id]:
                     mod = self.analyze_module(module_record, 'modules')
+
+                    mod.module_chain = mod_chain
                     mod_chain.modules.append(mod)
 
                 mod_chain_list.append(mod_chain)
