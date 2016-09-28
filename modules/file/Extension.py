@@ -1,5 +1,6 @@
 from modules import AbstractModule
-
+from kernel.output import Output, OutputResult
+from os.path import splitext
 
 class Extension(AbstractModule):
 
@@ -14,3 +15,20 @@ class Extension(AbstractModule):
 
     def is_filter_files(self) -> bool:
         return True
+
+    def do_filter_files(self):
+        files = self.module_chain.files
+        files_criteria = []
+        Output.log("Extension module. Filtering files. Files amount originally: %d" % len(files))
+        
+        for ext in self.args:
+            for f in files:
+                if f in files_criteria:
+                    continue
+
+                if splitext(f)[1] == ext:
+                    files_criteria.append(f)
+
+        Output.log("Files amount, which fits criteria: %d" % len(files_criteria))
+        
+        self.module_chain.files = files_criteria

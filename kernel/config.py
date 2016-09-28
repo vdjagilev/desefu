@@ -120,6 +120,8 @@ class Config:
                 Output.do("Error, arguments check have not been passed", OutputResult.Error)
                 Kernel.end()
 
+            mod.args = args
+
         except (SystemError, AttributeError) as e:
             Output.do("Could not import module \"%s\" due to errors." % module_config['mod'],
                       result=OutputResult.Error)

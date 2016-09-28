@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from kernel.output import Output, OutputResult
 
 
 class AbstractModule(ABC):
@@ -13,6 +14,7 @@ class AbstractModule(ABC):
         self.filter_files = False
         self.collect_data = False
         self.extract_data = False
+        self.args = None
 
     @abstractmethod
     def check(self):
@@ -47,6 +49,7 @@ class AbstractModule(ABC):
         pass
 
     def execute(self):
+        Output.log("Executing module: %s.%s" % (self.__class__.__module__, self.__class__.__name__))
         if self.is_filter_files():
             self.do_filter_files()
 

@@ -73,5 +73,4 @@ class Kernel:
             Output.do("Running module chain: \"%s\"" % mc.id)
             
             for mod in mc.modules:
-                Output.do(mod)
-
+                mod.execute()
