@@ -39,14 +39,14 @@ if __name__ == '__main__':
         args[0]
         Output.do("Config file is: \"%s\"" % args[0])
     except IndexError:
-        Output.do("No config file specified. Exiting", result=OutputResult.Fail)
+        Output.fail("No config file specified. Exiting")
         Kernel.end()
     
     try:
         args[1]
         Output.do("Evidence root folder is: \"%s\"" % args[1])
     except IndexError:
-        Output.do("No evidence directory root folder specified. Exiting", result=OutputResult.Fail)
+        Output.fail("No evidence directory root folder specified. Exiting")
         Kernel.end()
 
     config = Config(args[0], args[1])
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     config.close()
 
     if len(module_chain_list) == 0:
-        Output.do("Module chain list is empty, there is no records in \"search\" field.", OutputResult.Fail)
+        Output.fail("Module chain list is empty, there is no records in \"search\" field.")
         Kernel.end()
 
     # Executing search operation

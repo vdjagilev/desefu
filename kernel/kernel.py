@@ -57,11 +57,11 @@ class Kernel:
 
             mod = mod_class()
         except ImportError as e:
-            Output.do("Could not import module \"%s\"" % name, OutputResult.Error)
+            Output.err("Could not import module \"%s\"" % name)
             Output.log(e)
             Kernel.end()
         except TypeError as e:
-            Output.do("Could not initialize module. Important functions are missing in module", OutputResult.Error)
+            Output.err("Could not initialize module. Important functions are missing in module")
             Output.log(e)
             Kernel.end()
 

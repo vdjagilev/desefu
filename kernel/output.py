@@ -19,6 +19,22 @@ class Output:
     date_format = "%x %X %z"
     log_file = None
     file_resource = None
+    
+    @staticmethod
+    def ok(message: str, use_time: bool = True):
+        Output.do(message, OutputResult.OK, use_time)
+
+    @staticmethod
+    def fail(message: str, use_time: bool = True):
+        Output.do(message, OutputResult.Fail, use_time)
+
+    @staticmethod
+    def warn(message: str, use_time: bool = True):
+        Output.do(message, OutputResult.Warn, use_time)
+
+    @staticmethod
+    def err(message: str, use_time: bool = True):
+        Output.do(message, OutputResult.Error, use_time);
 
     @staticmethod
     def do(message: str, result: tuple = OutputResult.Info, use_time: bool = True):

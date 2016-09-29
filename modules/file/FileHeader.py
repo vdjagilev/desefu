@@ -16,12 +16,12 @@ class FileHeader(AbstractModule):
             types = args['types']
 
             if 0 == len(types):
-                Output.do("Amount of listed types should be at least one, or more", OutputResult.Error)
+                Output.err("Amount of listed types should be at least one, or more")
                 Kernel.end()
 
             Output.log("Amount of types: %d" % len(types))
         except IndexError:
-            Output.do("FileHeader module should have \"types\" argument", OutputResult.Error)
+            Output.err("FileHeader module should have \"types\" argument")
             Kernel.end()
 
         return True

@@ -20,17 +20,15 @@ class Config:
         try:
             self.file_resource = open(config_file, 'r')
         except:
-            Output.do("Failed to open config file \"%s\", unexpected error: \"%s\"" % (config_file, sys.exc_info()[0]),
-                      OutputResult.Error)
+            Output.err("Failed to open config file \"%s\", unexpected error: \"%s\"" % (config_file, sys.exc_info()[0]))
             Kernel.end()
 
         try:
             if not os.path.isdir(evidence_folder):
-                Output.do("Provided evidence folder \"%s\" is not a folder or does not exists" % evidence_folder,
-                          OutputResult.Error)
+                Output.err("Provided evidence folder \"%s\" is not a folder or does not exists" % evidence_folder)
                 Kernel.end()
         except PermissionError:
-            Output.do("There is no permission reading directory \"%s\"" % evidence_folder, OutputResult.Error)
+            Output.err("There is no permission reading directory \"%s\"" % evidence_folder)
             Kernel.end()
 
     """
@@ -44,14 +42,14 @@ class Config:
         try:
             config = ruamel.yaml.load(read_data, ruamel.yaml.RoundTripLoader)
         except:
-            Output.do("Could not parse config file due to error: %s" % sys.exc_info()[0], OutputResult.Error)
+            Output.err("Could not parse config file due to error: %s" % sys.exc_info()[0])
             Output.log(sys.exc_info())
             Kernel.end()
 
         try:
             self.author = config['author']
         except KeyError:
-            Output.do("Missing \"author\" value in config file", OutputResult.Error)
+            Output.err("Missing \"author\" value in config file")
             Kernel.end()
 
         # Meta key is optional
@@ -87,10 +85,10 @@ class Config:
 
                 mod_chain_list.append(mod_chain)
         except KeyError:
-            Output.do("Error getting \"search\" entry from config file", OutputResult.Error)
+            Output.err("Error getting \"search\" entry from config file")
             Kernel.end()
         except TypeError:
-            Output.do("Search entry does not contain any values", OutputResult.Error)
+            Output.err("Search entry does not contain any values")
             Kernel.end()
 
         return mod_chain_list
@@ -104,7 +102,7 @@ class Config:
             mod_check = mod.check()
 
             if not mod_check:
-                Output.do("Module check has failed.", OutputResult.Error)
+                Output.err("Module check has failed.")
                 Kernel.end()
 
             args = []
@@ -117,14 +115,13 @@ class Config:
             mod_check_args = mod.check_arguments(args)
 
             if not mod_check_args:
-                Output.do("Error, arguments check have not been passed", OutputResult.Error)
+                Output.err("Error, arguments check have not been passed")
                 Kernel.end()
 
             mod.args = args
 
         except (SystemError, AttributeError) as e:
-            Output.do("Could not import module \"%s\" due to errors." % module_config['mod'],
-                      result=OutputResult.Error)
+            Output.err("Could not import module \"%s\" due to errors." % module_config['mod'])
             Output.log(e)
             Kernel.end()
 
