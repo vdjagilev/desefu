@@ -129,14 +129,21 @@ class Config:
             Kernel.end()
 
         try:
-            module_config['sub']
+            sub_list = module_config['sub']
             Output.log("Analyzing submodule")
+            
+            if len(sub_list) > 0:
+                sibling_module_chain = ModuleChain()
 
-            for sub in module_config['sub']:
-                sub_mod = self.analyze_module(sub, module_type)
-                mod.sibling_module_list.append(sub_mod)
-                sub_mod.parent_module = mod
-                sub_mod.is_sub_module = True
+                for sub in module_config['sub']:
+                    sub_mod = self.analyze_module(sub, module_type)
+                    sub_mod.parent_module = mod
+                    sub_mod.is_sub_module = True
+                    # Each module should have reference
+                    sub_mod.module_chain = sibling_module_chain
+                    
+                    # Module chain of "sub" section should have a list of modules
+                    sibling_module_chain.modules.append(sub_mod)
         except KeyError:
             Output.log("No submodules detected")
 

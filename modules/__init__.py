@@ -6,10 +6,12 @@ class AbstractModule(ABC):
     def __init__(self):
         self.is_sub_module = False
         self.parent_module = None
-        self.sibling_module_list = []
 
         # Current module chain, where module is located
         self.module_chain = None
+        
+        # Sibling module chain, "sub"
+        self.sibling_module_chain = None
 
         self.filter_files = False
         self.collect_data = False
