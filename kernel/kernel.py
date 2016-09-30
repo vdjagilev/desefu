@@ -74,3 +74,8 @@ class Kernel:
             
             for mod in mc.modules:
                 mod.execute()
+
+
+                if mod.sibling_module_chain:
+                    Output.log("Sibling module chain exists")
+                    Kernel.exec_search([mod.sibling_module_chain])

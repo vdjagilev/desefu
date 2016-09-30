@@ -132,18 +132,25 @@ class Config:
             if len(sub_list) > 0:
                 sibling_module_chain = ModuleChain()
 
-                for sub in module_config['sub']:
+                for sub in sub_list:
+                    sub_mod = None
                     sub_mod = self.analyze_module(sub, module_type)
+
                     sub_mod.parent_module = mod
                     sub_mod.is_sub_module = True
-                    # Each module should have reference
-                    sub_mod.module_chain = sibling_module_chain
-                    
+
                     # Module chain of "sub" section should have a list of modules
                     sibling_module_chain.modules.append(sub_mod)
+
+                    # Each module should have reference, 
+                    sub_mod.module_chain = sibling_module_chain
+
+                mod.sibling_module_chain = sibling_module_chain
+                
+                return sub_mod
         except KeyError:
             Output.log("No submodules detected")
-
+        
         return mod
 
     def close(self):
