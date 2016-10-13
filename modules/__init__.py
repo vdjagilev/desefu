@@ -4,19 +4,16 @@ from kernel.output import Output, OutputResult
 
 class AbstractModule(ABC):
     def __init__(self):
-        self.is_sub_module = False
-        self.parent_module = None
-
-        # Current module chain, where module is located
+        # Sibling module chain, where submodules are located
         self.module_chain = None
-        
-        # Sibling module chain, "sub"
-        self.sibling_module_chain = None
 
         self.filter_files = False
         self.collect_data = False
         self.extract_data = False
         self.args = None
+
+        # Initial value is none, can be filled during execution
+        self.files = []
 
     @abstractmethod
     def check(self):
@@ -51,12 +48,17 @@ class AbstractModule(ABC):
         pass
 
     def execute(self):
-        Output.log("Executing module: %s.%s" % (self.__class__.__module__, self.__class__.__name__))
-        if self.is_filter_files():
-            self.do_filter_files()
+        Output.do("Executing module: \"%s\"" % self.__class__.__module__.replace("modules.", "", 1))
 
-        if self.is_collect_data():
-            self.do_collect_data()
+        try:
+            if self.is_filter_files():
+                self.do_filter_files()
+                Output.do("Files: %d" % len(self.files))
 
-        if self.is_extract_data():
-            self.do_extract_data()
+            if self.is_collect_data():
+                self.do_collect_data()
+
+            if self.is_extract_data():
+                self.do_extract_data()
+        except PermissionError as e:
+            Output.fail("Permission error. Could not read file \"%s\"" % e.filename)

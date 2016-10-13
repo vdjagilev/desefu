@@ -17,18 +17,15 @@ class Extension(AbstractModule):
         return True
 
     def do_filter_files(self):
-        files = self.module_chain.files
+        files = self.files
         files_criteria = []
-        Output.log("Extension module. Filtering files. Files amount originally: %d" % len(files))
-        
+
         for ext in self.args:
             for f in files:
                 if f in files_criteria:
                     continue
 
-                if splitext(f)[1] == ext:
+                if splitext(f)[1][1:] == ext:
                     files_criteria.append(f)
 
-        Output.log("Files amount, which fits criteria: %d" % len(files_criteria))
-        
-        self.module_chain.files = files_criteria
+        self.files = files_criteria

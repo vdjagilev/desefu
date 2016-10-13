@@ -12,3 +12,6 @@ class Dictionary(AbstractModule):
             return False
 
         return True
+
+    def do_filter_files(self):
+        return True

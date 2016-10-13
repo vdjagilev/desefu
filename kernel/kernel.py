@@ -50,6 +50,8 @@ class Kernel:
 
     @staticmethod
     def get_module(module_type: str, name: str) -> AbstractModule:
+        mod = None
+
         # Module import & Initialization
         try:
             mod_import = importlib.import_module(module_type + '.' + name)
@@ -71,11 +73,15 @@ class Kernel:
     def exec_search(module_chain: list) -> list:
         for mc in module_chain:
             Output.do("Running module chain: \"%s\"" % mc.id)
-            
+            Output.do("Amount of files: %d" % len(mc.files))
+
             for mod in mc.modules:
+                mod.files = mc.files
                 mod.execute()
 
+                mc.files = mod.files
 
-                if mod.sibling_module_chain:
-                    Output.log("Sibling module chain exists")
-                    Kernel.exec_search([mod.sibling_module_chain])
+                if mod.module_chain:
+                    Output.log("Running submodules")
+                    mod.module_chain.files = mod.files
+                    Kernel.exec_search([mod.module_chain])
