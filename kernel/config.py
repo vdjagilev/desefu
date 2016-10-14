@@ -1,9 +1,8 @@
 from kernel.module_chain import ModuleChain
-from kernel.output import Output, OutputResult
+from kernel.output import Output
 from kernel.kernel import Kernel
 import sys
 import ruamel.yaml
-import importlib
 import os
 
 from modules import AbstractModule
@@ -62,7 +61,6 @@ class Config:
 
         mod_chain_list = []
 
-        # try:
         evidence_files = []
         Output.do("Starting evidence folder scan")
         for root, dir, files in os.walk(self.evidence_folder):
