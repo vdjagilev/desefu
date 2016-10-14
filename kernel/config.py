@@ -106,13 +106,12 @@ class Config:
             except KeyError:
                 args = []
 
-            mod_check_args = mod.check_arguments(args)
+            mod.args = args
+            mod_check_args = mod.check_arguments()
 
             if not mod_check_args:
                 Output.err("Error, arguments check have not been passed")
                 Kernel.end()
-
-            mod.args = args
 
         except (SystemError, AttributeError) as e:
             Output.err("Could not import module \"%s\" due to errors." % module_config['mod'])

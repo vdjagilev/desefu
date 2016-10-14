@@ -7,7 +7,7 @@ class Extension(AbstractModule):
     def check(self):
         return True
 
-    def check_arguments(self, args):
+    def check_arguments(self):
         return True
 
     def description(self) -> str:

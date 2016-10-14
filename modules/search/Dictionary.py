@@ -6,8 +6,8 @@ class Dictionary(AbstractModule):
     def check(self):
         return True
 
-    def check_arguments(self, args):
-        if len(args) == 0:
+    def check_arguments(self):
+        if len(self.args) == 0:
             Output.err("Dictionary: Arguments should contain at least one dictionary")
             return False
 

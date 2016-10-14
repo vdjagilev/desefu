@@ -11,7 +11,7 @@ class SqliteDatabase(AbstractModule):
     def is_extract_data(self) -> bool:
         return True
 
-    def check_arguments(self, args):
+    def check_arguments(self):
         # ToDo: Check args
         return True
 

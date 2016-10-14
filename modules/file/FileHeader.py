@@ -13,9 +13,9 @@ class FileHeader(AbstractModule):
     def is_extract_data(self) -> bool:
         return False
 
-    def check_arguments(self, args):
+    def check_arguments(self):
         try:
-            types = args['types']
+            types = self.args['types']
 
             if 0 == len(types):
                 Output.err("Amount of listed types should be at least one, or more")

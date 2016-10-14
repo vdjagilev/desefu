@@ -20,7 +20,7 @@ class AbstractModule(ABC):
         pass
 
     @abstractmethod
-    def check_arguments(self, args):
+    def check_arguments(self):
         pass
 
     # Gives information if module filtering files or not
@@ -53,7 +53,7 @@ class AbstractModule(ABC):
         try:
             if self.is_filter_files():
                 self.do_filter_files()
-                Output.do("Files: %d" % len(self.files))
+                Output.ok("Files: %d" % len(self.files))
 
             if self.is_collect_data():
                 self.do_collect_data()
