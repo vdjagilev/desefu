@@ -34,33 +34,31 @@ class Output:
 
     @staticmethod
     def err(message: str, use_time: bool = True):
-        Output.do(message, OutputResult.Error, use_time);
+        Output.do(message, OutputResult.Error, use_time)
 
     @staticmethod
-    def do(message: str, result: tuple = OutputResult.Info, use_time: bool = True):
+    def do(message: str, result: tuple = OutputResult.Info, use_time: bool = True, ret: bool = False):
         if Output.log_file and Output.file_resource is None:
             Output.file_resource = open(Output.log_file, 'w+')
 
         if Output.quiet:
             return
 
-        print('[', end='')
-        print(colored(result[0], result[1], attrs=result[2]), end='')
-        print('] ', end='')
-
-        if Output.log_file:
-            Output.file_resource.write('[%s] ' % result[0])
+        date_time = ""
 
         if use_time:
-            print('[%s] ' % strftime(Output.date_format, localtime()), end='')
+            date_time = '[%s] ' % strftime(Output.date_format, localtime())
 
-            if Output.log_file:
-                Output.file_resource.write('[%s] ' % strftime(Output.date_format, localtime()))
-
-        print(message)
+        message_type = '[%s]' % colored(result[0], result[1], attrs=result[2])
+        message_result = '%s%s %s' % (message_type, date_time, message)
 
         if Output.log_file:
-            Output.file_resource.write(message + '\n')
+            Output.file_resource.write(message_result + '\n')
+
+        if ret:
+            return message_result
+
+        print(message_result)
 
     @staticmethod
     def log(message: str):

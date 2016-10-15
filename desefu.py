@@ -61,7 +61,14 @@ if __name__ == '__main__':
         Kernel.end()
 
     # Executing search operation
-    Kernel.exec_search(module_chain_list)
+    print(Output.do("Confirm if you want to start search (y/n): ", ret=True), end='')
+    answer = input()
+
+    if answer.lower() == 'y':
+        Output.ok("Search has been started")
+        Kernel.exec_search(module_chain_list)
+    else:
+        Output.fail("Search has been cancelled")
 
     # Program END
 
