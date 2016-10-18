@@ -49,8 +49,13 @@ class FileHeader(AbstractModule):
             for f in files:
                 if f in files_criteria:
                     continue
+                
+                try:
+                    file_data = open(f, 'r+b').read(len(t))
+                except Exception as e:
+                    Output.fail("Could not open a file due to exception. %s" % e)
+                    continue
 
-                file_data = open(f, 'r+b').read(len(t))
                 # ToDo: Do more effective way of comparison (binary) instead of string
                 header = ' '.join(["{:02X}".format(x) for x in file_data])
 
