@@ -4,6 +4,7 @@ from kernel.kernel import Kernel
 import sys
 import ruamel.yaml
 import os
+import hashlib
 
 from modules import AbstractModule
 
@@ -44,6 +45,10 @@ class Config:
             Output.err("Could not parse config file due to error: %s" % sys.exc_info()[0])
             Output.log(sys.exc_info())
             Kernel.end()
+
+        # Print hash file of the config file
+        sha256 = hashlib.sha256(open(self.config_file, 'rb').read()).hexdigest()
+        Output.do("Config file SHA256: %s" % sha256)
 
         try:
             self.author = config['author']
