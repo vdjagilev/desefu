@@ -18,8 +18,14 @@ search:
     -
       mod: search.Dictionary
       args:
-        - './tests/modules/search/dictionaries/dictionary1.txt'
-        - './tests/modules/search/dictionaries/dictionary2.txt'
+        dictionary:
+          - './tests/modules/search/dictionaries/dictionary1.txt'
+          - './tests/modules/search/dictionaries/dictionary2.txt'
+        encoding: # https://docs.python.org/3/library/codecs.html#standard-encodings
+          - 'utf-8'
+          - 'ascii'
+          - 'latin-1'
+          - 'cp866'
       sub:
         -
           mod: file.type.SqliteDatabase

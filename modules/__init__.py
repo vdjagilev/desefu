@@ -15,6 +15,8 @@ class AbstractModule(ABC):
         # Initial value is none, can be filled during execution
         self.files = []
 
+        self.data = {}
+
     @abstractmethod
     def check(self):
         pass
