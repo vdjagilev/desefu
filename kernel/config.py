@@ -47,7 +47,7 @@ class Config:
             Kernel.end()
 
         # After config file has been loaded
-        config.close()
+        self.file_resource.close()
 
         # Print hash file of the config file
         sha256 = hashlib.sha256(open(self.config_file, 'rb').read()).hexdigest()
