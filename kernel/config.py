@@ -46,6 +46,9 @@ class Config:
             Output.log(sys.exc_info())
             Kernel.end()
 
+        # After config file has been loaded
+        config.close()
+
         # Print hash file of the config file
         sha256 = hashlib.sha256(open(self.config_file, 'rb').read()).hexdigest()
         Output.do("Config file SHA256: %s" % sha256)
