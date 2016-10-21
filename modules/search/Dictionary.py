@@ -39,7 +39,7 @@ class Dictionary(AbstractModule):
                             self.dict_words[dict_file].append(line.strip())
 
             except Exception as e:
-                Output.err("Could not read file \"%s\". %s" % (dict_file, e.with_traceback()))
+                Output.err("Could not read file \"%s\". %s" % (dict_file, e))
                 Kernel.end()
 
         Output.do("Total amount of word dictionaries: %d" % len(self.dict_words))
@@ -70,6 +70,9 @@ class Dictionary(AbstractModule):
                     except UnicodeDecodeError as e:
                         Output.log("Could not decode file \"%s\" in unicode" % f)
                         continue
+                    except Exception as e:
+                        Output.err("File \"%s\" could not be opened: %s" % (f, e))
+                        Kernel.end()
 
                     file_encoding = enc
 

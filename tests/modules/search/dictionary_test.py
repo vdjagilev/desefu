@@ -32,6 +32,13 @@ def test_check_arguments_fail():
 
     assert not dic.check_arguments()
 
+    dic.args = {'dictionary': ['./tests/modules/search/dictionaries/nonexistentfile_dictionary.txt']}
+
+    try:
+        assert dic.check_arguments()
+    except SystemExit:
+        assert True
+
 def test_data_collection():
     dic = Dictionary()
     dic.args = {
@@ -53,3 +60,16 @@ def test_data_collection():
     assert len(dic.data) == 1
     assert list(dic.data)[0] == './tests/modules/search/dictionary_mocks/test1.sqlite'
     assert dic.data['./tests/modules/search/dictionary_mocks/test1.sqlite'].sort() == ['stash', 'thesis', 'test', 'object'].sort()
+
+    dic.files.append('./tests/modules/search/dictionary_mocks/nonexistentfile')
+
+    try:
+        assert dic.do_filter_files()
+    except SystemExit:
+        assert True
+
+def test_dict_values():
+    dic = Dictionary()
+    assert len(dic.description()) > 0
+    assert dic.is_filter_files()
+    assert dic.check()
