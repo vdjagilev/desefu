@@ -14,6 +14,7 @@ def test_get_module():
                 'sub': [
                     {
                         'mod': 'file.Extension',
+                        'args': [''],
                         'sub': [
                             {
                                 'mod': 'file.FileHeader',
