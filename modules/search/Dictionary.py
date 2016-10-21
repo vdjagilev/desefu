@@ -84,11 +84,18 @@ class Dictionary(AbstractModule):
                         if f not in self.files_criteria:
                             self.files_criteria.append(f)
 
+                        # Data collection part, which is responsible for collecting data.
+                        # For each file there is a set of words, which were found in
+                        # that file. In this case do_filter_files() function does
+                        # do_collect_data(), but that is needed for optimization
+                        # in order to avoid file content search procedure again
                         try:
                             self.data[f]
                         except KeyError:
                             self.data[f] = []
 
                         self.data[f].append(line)
+
+        self.files = self.files_criteria
 
         return True
