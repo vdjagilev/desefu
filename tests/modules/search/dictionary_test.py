@@ -22,6 +22,16 @@ def test_check_arguments():
     assert dic1[3] == 'thesis'
     assert dic2[3] == 'hello'
 
+def test_check_arguments_fail():
+    dic = Dictionary()
+    dic.args = {}
+
+    assert not dic.check_arguments()
+
+    dic.args = {'random': [1, 2, 3]}
+
+    assert not dic.check_arguments()
+
 def test_data_collection():
     dic = Dictionary()
     dic.args = {
@@ -33,10 +43,13 @@ def test_data_collection():
 
     assert dic.check_arguments()
 
-    dic.files = ['./tests/modules/search/dictionary_mocks/test1']
+    dic.files = [
+        './tests/modules/search/dictionary_mocks/test1.sqlite',
+        './tests/modules/search/dictionary_mocks/empty'
+    ]
 
     assert dic.do_filter_files()
 
     assert len(dic.data) == 1
-    assert list(dic.data)[0] == './tests/modules/search/dictionary_mocks/test1'
-    assert dic.data['./tests/modules/search/dictionary_mocks/test1'].sort() == ['stash', 'thesis', 'test', 'object'].sort()
+    assert list(dic.data)[0] == './tests/modules/search/dictionary_mocks/test1.sqlite'
+    assert dic.data['./tests/modules/search/dictionary_mocks/test1.sqlite'].sort() == ['stash', 'thesis', 'test', 'object'].sort()

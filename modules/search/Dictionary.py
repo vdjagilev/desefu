@@ -76,7 +76,7 @@ class Dictionary(AbstractModule):
                     if file_content:
                         break
 
-                if not file_content:
+                if not file_content or len(file_content) == 0:
                     continue
 
                 for line in self.dict_words[dictionary]:
