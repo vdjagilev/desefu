@@ -19,7 +19,7 @@ class Output:
     date_format = "%x %X %z"
     log_file = None
     file_resource = None
-    
+
     @staticmethod
     def ok(message: str, use_time: bool = True):
         Output.do(message, OutputResult.OK, use_time)

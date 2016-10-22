@@ -51,3 +51,32 @@ def test_get_module():
 
     assert {'types': [['00', '00', '00']]} == file_header.args
     assert file_header.__class__.__name__ == 'FileHeader'
+
+def test_config_init():
+    conf = Config('./examples/phone_msg.yml', './tests/config/')
+
+    assert conf.config_file == './examples/phone_msg.yml'
+    assert conf.evidence_folder == './tests/config/'
+
+def config_test_init_fail():
+    try:
+        Config('./examples/nonexistent', './tests/config/')
+    except SystemExit:
+        assert True
+
+    try:
+        Config('./examples/phone_msg.yml', './tests/nonexistent_folder/')
+    except SystemExit:
+        assert True
+
+def test_config_analyze():
+    conf = Config('./examples/phone_msg.yml', './tests/config/')
+
+    mod_chain_list = conf.analyze()
+
+    assert mod_chain_list
+    assert isinstance(mod_chain_list, list)
+    assert len(mod_chain_list) > 0
+    assert mod_chain_list[0]
+    assert isinstance(mod_chain_list[0], ModuleChain)
+    assert isinstance(mod_chain_list[0].modules[0], AbstractModule)
