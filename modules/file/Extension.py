@@ -8,7 +8,7 @@ class Extension(AbstractModule):
         return True
 
     def check_arguments(self):
-        if len(self.args) == 0:
+        if not self.args or len(self.args) == 0:
             Output.err("Extension should have at least one element in arguments")
             return False
 

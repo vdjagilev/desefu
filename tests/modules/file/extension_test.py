@@ -36,11 +36,11 @@ def test_filter_files():
 
     ext.files = files
 
-    assert ext.do_filter_files()
+    ext.do_filter_files()
     assert len(ext.files) == 1
 
     ext.files = files
     ext.args = ['', 'db', 'jpg']
 
-    assert ext.do_filter_files()
+    ext.do_filter_files()
     assert len(ext.files) == 3

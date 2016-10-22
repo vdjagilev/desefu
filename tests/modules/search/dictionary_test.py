@@ -55,7 +55,7 @@ def test_data_collection():
         './tests/modules/search/dictionary_mocks/empty'
     ]
 
-    assert dic.do_filter_files()
+    dic.do_filter_files()
 
     assert len(dic.data) == 1
     assert list(dic.data)[0] == './tests/modules/search/dictionary_mocks/test1.sqlite'
@@ -64,7 +64,8 @@ def test_data_collection():
     dic.files.append('./tests/modules/search/dictionary_mocks/nonexistentfile')
 
     try:
-        assert dic.do_filter_files()
+        dic.do_filter_files()
+        assert False
     except SystemExit:
         assert True
 

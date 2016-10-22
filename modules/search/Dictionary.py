@@ -100,5 +100,3 @@ class Dictionary(AbstractModule):
                         self.data[f].append(line)
 
         self.files = self.files_criteria
-
-        return True
