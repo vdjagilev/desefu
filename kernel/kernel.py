@@ -7,6 +7,9 @@ from kernel.output import Output, OutputResult
 import sys
 
 from modules import AbstractModule
+from kernel.module_chain import ModuleChain
+import json
+from time import strftime, localtime
 
 
 class Kernel:
@@ -70,7 +73,7 @@ class Kernel:
         return mod
 
     @staticmethod
-    def exec_search(module_chain: list) -> list:
+    def exec_search(module_chain: list, sub: bool = False) -> list:
         for mc in module_chain:
             Output.do("Running module chain: \"%s\"" % mc.id)
             Output.do("Amount of files: %d" % len(mc.files))
@@ -84,4 +87,37 @@ class Kernel:
                 if mod.module_chain:
                     Output.log("Running submodules")
                     mod.module_chain.files = mod.files
-                    Kernel.exec_search([mod.module_chain])
+                    Kernel.exec_search([mod.module_chain], True)
+
+            if not sub:
+                module_chain_result = Kernel.collect_result(mc)
+                f = open('%s_%s.json' % (mc.id, strftime('%d%m%Y_%H%M%S', localtime())), 'w')
+                json.dump(module_chain_result, f)
+                f.close()
+
+    @staticmethod
+    def collect_result(module_chain: ModuleChain) -> object:
+        result = {
+            "module_chain_id": module_chain.id,
+            "modules": []
+        }
+
+        i = 0
+        m = len(module_chain.modules)
+        for mod in module_chain.modules:
+            module_data = {
+                'mod': mod.__class__.__module__.replace("modules.", "", 1)
+            }
+
+            # It makes sense to include files only from last module
+            if i == (m - 1):
+                module_data['files'] = mod.files
+
+            module_data['data'] = mod.data,
+            if mod.module_chain:
+                module_data['module_chain'] = Kernel.collect_result(mod.module_chain)
+
+            result['modules'].append(module_data)
+            i = i + 1
+
+        return result
