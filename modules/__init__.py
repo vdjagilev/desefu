@@ -15,7 +15,11 @@ class AbstractModule(ABC):
         # Initial value is none, can be filled during execution
         self.files = []
 
+        # Data collected from files
         self.data = {}
+
+        # Extract options
+        self.extract = {}
 
     @abstractmethod
     def check(self):

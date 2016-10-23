@@ -124,6 +124,21 @@ class Config:
             Output.log(e)
             Kernel.end()
 
+        extract_option = False
+
+        try:
+            module_config['extract']
+            extract_option = True
+        except KeyError:
+            extract_option = False
+
+        if not mod.is_extract_data() and extract_option:
+            Output.err("Module \"%s\" cannot have \"extract\" option")
+            Kernel.end()
+
+        if extract_option:
+            mod.extract = module_config['extract']
+
         try:
             module_config['sub']
             sub_exists = True

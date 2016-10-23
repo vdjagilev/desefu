@@ -19,8 +19,8 @@ def test_check_arguments():
 
     assert dic1[0] == 'a simple'
     assert dic2[0] == 'testing'
-    assert dic1[3] == 'thesis'
-    assert dic2[3] == 'hello'
+    assert dic1[2] == 'thesis'
+    assert dic2[3] == 'asdfghjkl'
 
 def test_check_arguments_fail():
     dic = Dictionary()

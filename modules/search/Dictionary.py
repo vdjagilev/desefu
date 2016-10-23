@@ -83,7 +83,7 @@ class Dictionary(AbstractModule):
                     continue
 
                 for line in self.dict_words[dictionary]:
-                    if file_content.find(line) != -1:
+                    if file_content.lower().find(line.lower()) != -1:
                         if f not in self.files_criteria:
                             self.files_criteria.append(f)
 
