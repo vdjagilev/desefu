@@ -110,6 +110,7 @@ class Kernel:
             }
 
             # It makes sense to include files only from last module
+            # when all of them were filtered within certain Module Chain
             if i == (m - 1):
                 module_data['files'] = mod.files
 
