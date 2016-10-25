@@ -112,6 +112,21 @@ class Config:
             except KeyError:
                 args = []
 
+            extract_option = False
+
+            try:
+                module_config['extract']
+                extract_option = True
+            except KeyError:
+                extract_option = False
+
+            if not mod.is_extract_data() and extract_option:
+                Output.err("Module \"%s\" cannot have \"extract\" option")
+                Kernel.end()
+
+            if extract_option:
+                mod.extract = module_config['extract']
+
             mod.args = args
             mod_check_args = mod.check_arguments()
 
@@ -123,21 +138,6 @@ class Config:
             Output.err("Could not import module \"%s\" due to errors." % module_config['mod'])
             Output.log(e)
             Kernel.end()
-
-        extract_option = False
-
-        try:
-            module_config['extract']
-            extract_option = True
-        except KeyError:
-            extract_option = False
-
-        if not mod.is_extract_data() and extract_option:
-            Output.err("Module \"%s\" cannot have \"extract\" option")
-            Kernel.end()
-
-        if extract_option:
-            mod.extract = module_config['extract']
 
         try:
             module_config['sub']

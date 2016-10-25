@@ -1,4 +1,5 @@
 from modules import AbstractModule
+from kernel.output import Output
 
 
 class SqliteDatabase(AbstractModule):
@@ -12,7 +13,13 @@ class SqliteDatabase(AbstractModule):
         return True
 
     def check_arguments(self):
-        # ToDo: Check args
+        # Check "extract" field as well
+        try:
+            result = self.extract['result']
+        except KeyError:
+            Output.err("\"extract\" mandatory option \"result\" is missing")
+            return False
+
         return True
 
     def description(self) -> str:
@@ -20,3 +27,6 @@ class SqliteDatabase(AbstractModule):
 
     def is_filter_files(self) -> bool:
         return False
+
+    def do_extract_data(self):
+        pass
