@@ -20,3 +20,36 @@ In order to make it run a recent version of Python is required (at least 3.4)
 ```
 ./desefu.py ~/path/to/config.yml ~/path/to/evidence/folder
 ```
+
+# Config file
+
+An example of config file:
+```yml
+author: Name Surname
+search:
+  seach_id_1:
+    -
+      mod: file.Extension
+      args: ['doc', 'docx', 'xls', 'xlsx']
+    -
+      mod: some.Module
+      args: ['arguments', 'for', 'each', 'module', 'are', 'unique']
+      sub: # A chain of modules
+        -
+          mod: some.other.Module
+          extract: # Optional parameter, not all modules support this
+            abc: 123
+  search_jpg:
+    -
+      mod: file.Extension
+      args: ['', 'jpg', 'jpeg']
+    -
+      mod: file.FileHeader
+      args:
+        - [FF, D8, FF, E0, 00, 10, 4A, 46, 49, 46]
+    -
+      mod: file.type.jpeg.Exif
+      extract:
+        gps: true
+        model: true
+```
