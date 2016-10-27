@@ -27,19 +27,19 @@ An example of config file:
 ```yml
 author: Name Surname
 search:
-  seach_id_1:
+  seach_id_1: # Module chain ID
     -
-      mod: file.Extension
+      mod: file.Extension # This module filter files by their extension
       args: ['doc', 'docx', 'xls', 'xlsx']
     -
       mod: some.Module
       args: ['arguments', 'for', 'each', 'module', 'are', 'unique']
-      sub: # A chain of modules
+      sub: # Another (sub)module chain
         -
           mod: some.other.Module
           extract: # Optional parameter, not all modules support this
             abc: 123
-  search_jpg:
+  search_jpg: # For each module chain, initial list of files is the same
     -
       mod: file.Extension
       args: ['', 'jpg', 'jpeg']
