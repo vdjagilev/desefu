@@ -114,11 +114,13 @@ class Kernel:
             if i == (m - 1):
                 module_data['files'] = mod.files
 
-            module_data['data'] = mod.data,
+            module_data['files_count'] = len(mod.files)
+            module_data['data'] = mod.data
+
             if mod.module_chain:
                 module_data['module_chain'] = Kernel.collect_result(mod.module_chain)
 
             result['modules'].append(module_data)
-            i = i + 1
+            i += 1
 
         return result
