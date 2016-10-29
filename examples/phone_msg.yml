@@ -35,12 +35,3 @@ search:
               timestamps: DESC
             result:
               - columns # Also possible to fetch whole table, or some rows where information were found
-
-extract:
-  sqlite_dbs:
-    format:
-      - csv
-      - html
-      - xlsx
-      - pdf
-    output: report_result # By default timestamp.{format}
