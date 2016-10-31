@@ -147,7 +147,7 @@ class Config:
 
         if sub_exists:
             sub_list = module_config['sub']
-            Output.log("Analyzing submodule of \"%s\"")
+            Output.log("Analyzing submodule of \"%s\"" % module_config['mod'])
             chain = Config.get_chain("[sub[%s]]" % (module_config['mod']), [], sub_list)
             mod.module_chain = chain
         else:
