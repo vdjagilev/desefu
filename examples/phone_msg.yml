@@ -35,3 +35,5 @@ search:
               timestamps: DESC
             result:
               - columns # Also possible to fetch whole table, or some rows where information were found
+    -
+      mod: file.Hash

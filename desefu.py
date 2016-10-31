@@ -7,7 +7,7 @@ from kernel.config import Config
 from kernel.kernel import Kernel
 from kernel.output import Output, OutputResult
 
-_version = "0.1a"
+_version = "0.1"
 _choices = ['json', 'xml', 'csv', 'html']
 
 # Initializing colorama
