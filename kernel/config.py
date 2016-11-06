@@ -12,7 +12,9 @@ from modules import AbstractModule
 class Config:
     def __init__(self, config_file, evidence_folder):
         self.config_file = config_file
+        self.config_file_sha256 = None
         self.evidence_folder = evidence_folder
+        self.files_count_initial = 0
         self.module_chain = []
         self.author = None
         self.meta = None
@@ -51,6 +53,7 @@ class Config:
 
         # Print hash file of the config file
         sha256 = hashlib.sha256(open(self.config_file, 'rb').read()).hexdigest()
+        self.config_file_sha256 = sha256
         Output.do("Config file SHA256: %s" % sha256)
 
         try:
@@ -75,6 +78,7 @@ class Config:
             for file in files:
                 evidence_files.append(os.path.join(root, file))
 
+        self.files_count_initial = len(evidence_files)
         Output.do("Total amount of files: %d" % len(evidence_files))
 
         for record_id in config['search']:

@@ -9,10 +9,12 @@ import sys
 from modules import AbstractModule
 from kernel.module_chain import ModuleChain
 import json
-from time import strftime, localtime
+
 
 
 class Kernel:
+    result = None
+
     @staticmethod
     def start(_version, _choices):
         parser = OptionParser(usage="%prog [options] config_file directory_root", version="%prog " + _version)
@@ -91,9 +93,7 @@ class Kernel:
 
             if not sub:
                 module_chain_result = Kernel.collect_result(mc)
-                f = open('%s_%s.json' % (mc.id, strftime('%d%m%Y_%H%M%S', localtime())), 'w')
-                json.dump(module_chain_result, f)
-                f.close()
+                Kernel.result.result.append(module_chain_result)
 
     @staticmethod
     def collect_result(module_chain: ModuleChain) -> object:
@@ -109,8 +109,8 @@ class Kernel:
                 'mod': mod.__class__.__module__.replace("modules.", "", 1)
             }
 
-            # It makes sense to include files only from last module
-            # when all of them were filtered within certain Module Chain
+            # It makes sense to include files only for the last module
+            # when all of them were filtered in certain Module Chain
             if i == (m - 1):
                 module_data['files'] = mod.files
 
