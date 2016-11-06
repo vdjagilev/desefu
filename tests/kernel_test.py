@@ -1,5 +1,7 @@
 from kernel.kernel import Kernel
 from modules import AbstractModule
+from kernel.config import Config
+from kernel.result import Result
 from kernel.module_chain import ModuleChain
 import glob
 import os
@@ -21,10 +23,10 @@ def test_get_module():
         assert True
 
 def test_main_exec_search():
-    remove_files = glob.glob('abcetc_*.json')
+    config = Config('./examples/phone_msg.yml', './tests/modules/file/extension_mocks')
+    result = Result(config)
 
-    for rf in remove_files:
-        os.remove(rf)
+    Kernel.result = result
 
     mc = ModuleChain()
     mc.id = "abcetc"
@@ -41,12 +43,7 @@ def test_main_exec_search():
 
     Kernel.exec_search([mc])
 
-    files = glob.glob('abcetc_*.json')
-
-    assert len(files) == 1
-
-    with open(files[0], 'r') as file_data:
-        data = json.load(file_data)
+    data = Kernel.result.result[0]
 
     assert data['module_chain_id'] == 'abcetc'
     assert len(data['modules']) == 1
