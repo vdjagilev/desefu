@@ -6,6 +6,9 @@ from termcolor import colored
 from kernel.config import Config
 from kernel.kernel import Kernel
 from kernel.output import Output, OutputResult
+from kernel.result import Result
+
+from time import strftime, localtime
 
 _version = "0.1"
 _choices = ['json', 'xml', 'csv', 'html']
@@ -60,12 +63,20 @@ if __name__ == '__main__':
     print(Output.do("Confirm if you want to start search (y/n): ", ret=True), end='')
     answer = input()
 
+    result = Result(config)
+    Kernel.result = result
+
     if answer.lower() == 'y':
         Output.ok("Search has been started")
         Kernel.exec_search(module_chain_list)
     else:
         Output.fail("Search has been cancelled")
 
+    result_filename = 'result_%s.json' % strftime('%d%m%Y_%H%M%S', localtime())
+    result_file = open(result_filename, mode='w')
+    Output.do("Writing result data to %s" % result_filename)
+    result_file.write(result.get_json())
+    result_file.close()
     # Program END
 
     # Closing file

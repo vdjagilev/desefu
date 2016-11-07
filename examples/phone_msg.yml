@@ -30,7 +30,12 @@ search:
         -
           mod: file.type.SqliteDatabase
           extract:
-            columns: [result, timestamps] # Result columns and tries to get timestamps
+            columns:
+              - result # Columns where evidence were found (from parent Dictionary module)
+              - timestamps # Possible timestamp values
+              - id # Fields which might be identifiers - contain "id" keyword
+            where:
+              - ~mod.3.data.0 # "~" is a reference to module number 3, collected data column with index 0
             order:
               timestamps: DESC
             result:
