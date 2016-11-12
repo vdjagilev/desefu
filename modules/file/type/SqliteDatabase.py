@@ -1,6 +1,7 @@
 from modules import AbstractModule
 from kernel.output import Output
 import sqlite3
+from sqlite3 import OperationalError
 
 
 class SqliteDatabase(AbstractModule):
@@ -21,7 +22,21 @@ class SqliteDatabase(AbstractModule):
         pass
 
     def do_extract_data(self):
-        pass
+        # Traverse each database
+        for db_file in self.files:
+            db = sqlite3.connect('file:%s?mode=ro' % db_file, uri=True)
+            tables = {}
+
+            for row in db.execute('SELECT tbl_name FROM sqlite_master WHERE type = "table"'):
+                timestamp_columns = []
+                id_columns = []
+
+                try:
+                    tables[row[0]] = db.execute('PRAGMA table_info(%s);' % row[0]).fetchall()
+                except OperationalError:
+                    Output.warn("Could not fetch table info from table \"%s\"" % row[0])
+
+            db.close()
 
     def check_arguments(self):
         self.e_result = None
