@@ -7,6 +7,11 @@ class AbstractModule(ABC):
         # Sibling module chain, where submodules are located
         self.module_chain = None
 
+        # Current module chain, where module is located
+        self.current_module_chain = None
+        # Parent module chain
+        self.parent_module_chain = None
+
         self.filter_files = False
         self.collect_data = False
         self.extract_data = False
@@ -31,15 +36,15 @@ class AbstractModule(ABC):
 
     # Gives information if module filtering files or not
     def is_filter_files(self) -> bool:
-        return self.filter_files
+        return False
 
     # Gives information if module collecting data from analyzed files
     def is_collect_data(self) -> bool:
-        return self.collect_data
+        return False
 
     # Does module have extract options
     def is_extract_data(self) -> bool:
-        return self.extract_data
+        return False
 
     def description(self) -> str:
         return ""

@@ -75,21 +75,26 @@ class Kernel:
         return mod
 
     @staticmethod
-    def exec_search(module_chain: list, sub: bool = False) -> list:
+    def exec_search(module_chain: list, sub: bool = False, parent_chain: ModuleChain = None) -> list:
         for mc in module_chain:
             Output.do("Running module chain: \"%s\"" % mc.id)
             Output.do("Amount of files: %d" % len(mc.files))
 
             for mod in mc.modules:
                 mod.files = mc.files
+
+                if sub:
+                    mod.parent_module_chain = parent_chain
+
                 mod.execute()
 
                 mc.files = mod.files
 
                 if mod.module_chain:
-                    Output.log("Running submodules")
+                    Output.log("Running submodules of %s" % mod.__class__.__module__.replace("modules.", "", 1))
+                    # Setting parent module chain
                     mod.module_chain.files = mod.files
-                    Kernel.exec_search([mod.module_chain], True)
+                    Kernel.exec_search([mod.module_chain], True, mc)
 
             if not sub:
                 module_chain_result = Kernel.collect_result(mc)
