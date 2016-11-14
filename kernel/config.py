@@ -94,6 +94,7 @@ class Config:
 
         for mod_record in mod_list_config:
             mod = Config.get_module(mod_record)
+            mod.current_module_chain = chain
             chain.modules.append(mod)
 
         return chain
