@@ -82,11 +82,13 @@ class SqliteDatabase(AbstractModule):
 
                 if 'timestamps' in self.extract['columns']:
                     for substring in self.potential_timestamps:
-                        timestamp_columns.extend([s for s in table_columns if substring.lower() in s.lower()])
+                        if substring not in timestamp_columns:
+                            timestamp_columns.extend([s for s in table_columns if substring.lower() in s.lower()])
 
                 if 'id' in self.extract['columns']:
                     for substring in ['id']:
-                        id_columns.extend([s for s in table_columns if substring.lower() in s.lower()])
+                        if substring not in timestamp_columns:
+                            id_columns.extend([s for s in table_columns if substring.lower() in s.lower()])
 
                 for file_data_elem in collected_file_data:
                     for row in result:
@@ -121,19 +123,12 @@ class SqliteDatabase(AbstractModule):
                 self.extract_data[db_file] = tables
 
     def check_arguments(self):
-        self.e_result = None
-        self.e_query_where = None
-        self.e_query_order = None
-        self.e_query_select = None
-
         # Check "extract" field as well
         try:
             result = self.extract['result']
         except KeyError:
             Output.err("\"extract\" mandatory option \"result\" is missing")
             return False
-
-        self.e_result = result
 
         where_query = None
         try:
@@ -145,23 +140,17 @@ class SqliteDatabase(AbstractModule):
             Output.err("Option \"where\" is mandatory.")
             Kernel.end()
 
-        self.e_query_where = where_query
-
         order_query = None
         try:
             order_query = self.extract['order']
         except KeyError:
             order_query = False
 
-        self.e_query_order = order_query
-
         select_query = None
         try:
             select_query = self.extract['columns']
         except KeyError:
             select_query = False
-
-        self.e_query_select = select_query
 
         return True
 
