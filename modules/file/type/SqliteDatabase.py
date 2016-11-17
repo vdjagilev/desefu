@@ -1,3 +1,4 @@
+# -- coding: utf-8 --
 from modules import AbstractModule
 from kernel.output import Output
 from kernel.kernel import Kernel
@@ -25,8 +26,8 @@ class SqliteDatabase(AbstractModule):
         search_criteria_index = None
 
         # ToDo: Add other variants (file, custom string support, ... etc)
-        if len(self.e_query_where) != 0:
-            where_str = self.e_query_where
+        if len(self.extract['where']) != 0:
+            where_str = self.extract['where']
 
             # Reference to a mod
             # ToDo: Make possible to have an array instead of key:value pair
@@ -44,6 +45,7 @@ class SqliteDatabase(AbstractModule):
 
         # Traverse each database file
         for db_file in self.files:
+            collected_file_data = []
 
             if search_criteria_data:
                 # For simple array data, without any index
@@ -94,7 +96,6 @@ class SqliteDatabase(AbstractModule):
                                     result_columns.append(table_columns[col])
 
                 if len(result_columns) > 0:
-                    #export_columns = id_columns + timestamp_columns + result_columns
                     export_columns = []
                     export_columns.extend(id_columns)
                     export_columns.extend(timestamp_columns)
@@ -103,38 +104,21 @@ class SqliteDatabase(AbstractModule):
 
                     # ToDo: Make ORDER BY query here.
                     result_cursor = db.cursor()
-                    result_data = db.execute("SELECT %s FROM %s;" % (", ".join(export_columns), table[0]))
+                    result_data = result_cursor.execute("SELECT %s FROM %s;" % (", ".join(export_columns), table[0]))
 
-                    for c in export_columns:
-                        for row in result_data:
-                            #print("Col: %s, data: %s" % (c, row[c]))
-                            print(row[c])
-                            #export_data.append([row[c]])
+                    # ToDo: Fetch only matched data, not all data
+                    for row in result_data:
+                        row_data = []
+                        for c in export_columns:
+                            row_data.append(row[c])
 
-                    #for c in export_columns:
-                    #    data = []
-                    #    print("Idx: %s, Col: %s" % (export_columns.index(c), c))
-                    #    print(row[export_columns.index(c)])
-                    #    print("------")
-
-                    #    for row in result:
-                    #        data.append(row[export_columns.index(c)])
-
-                    #    export_data = data
+                        export_data.append(row_data)
 
                     tables[table[0]] = (export_columns, export_data)
-                #print("Table: %s" % table[0])
-                #print("TimeCol: %s" % timestamp_columns)
-                #print("IdCol: %s" % id_columns)
-                #print("Col: %s" % result_columns)
-                #print("---------------------------------")
-
             db.close()
 
             if len(tables) > 0:
                 self.extract_data[db_file] = tables
-
-        print(self.extract_data)
 
     def check_arguments(self):
         self.e_result = None

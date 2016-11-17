@@ -73,7 +73,7 @@ if __name__ == '__main__':
         Output.fail("Search has been cancelled")
 
     result_filename = 'result_%s.json' % strftime('%d%m%Y_%H%M%S', localtime())
-    result_file = open(result_filename, mode='w')
+    result_file = open(result_filename, mode='w', encoding='utf-8')
     Output.do("Writing result data to %s" % result_filename)
     result_file.write(result.get_json())
     result_file.close()

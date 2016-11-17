@@ -1,15 +1,12 @@
 # Kernel module
 # =============
 import importlib
+import sys
 from optparse import OptionParser
 
-from kernel.output import Output, OutputResult
-import sys
-
-from modules import AbstractModule
 from kernel.module_chain import ModuleChain
-import json
-
+from kernel.output import Output, OutputResult
+from modules import AbstractModule
 
 
 class Kernel:
@@ -121,6 +118,9 @@ class Kernel:
 
             module_data['files_count'] = len(mod.files)
             module_data['data'] = mod.data
+
+            if mod.extract_data:
+                module_data['extract_data'] = mod.extract_data
 
             if mod.module_chain:
                 module_data['module_chain'] = Kernel.collect_result(mod.module_chain)
