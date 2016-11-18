@@ -135,6 +135,11 @@ class Config:
             mod.args = args
             mod_check_args = mod.check_arguments()
 
+            try:
+                mod.title = module_config['title']
+            except KeyError:
+                mod.title = module_config['mod']
+
             if not mod_check_args:
                 Output.err("Error, arguments check have not been passed")
                 Kernel.end()

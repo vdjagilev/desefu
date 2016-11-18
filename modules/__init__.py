@@ -16,6 +16,7 @@ class AbstractModule(ABC):
         self.collect_data = False
         self.extract_data = False
         self.args = None
+        self.title = None
 
         # Initial value is none, can be filled during execution
         self.files = []

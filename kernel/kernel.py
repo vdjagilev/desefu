@@ -118,6 +118,7 @@ class Kernel:
 
             module_data['files_count'] = len(mod.files)
             module_data['data'] = mod.data
+            module_data['title'] = mod.title
 
             if mod.extract_data:
                 module_data['extract_data'] = mod.extract_data

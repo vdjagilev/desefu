@@ -8,14 +8,17 @@ meta:
 search:
   sqlite_dbs:
     -
+      title: "Filter by file extension" # Titles can be anything, used by desefu-extract
       mod: file.Extension
-      args: ['', 'sqlite', 'sqlite3', 'db']
+      args: ['', 'sqlite', 'sqlite3', 'db', 'db3']
     -
+      title: "SQLite3 databases only"
       mod: file.FileHeader
       args:
         types:
           - [53, 51, 4C, 69, 74, 65, 20, 66, 6F, 72, 6D, 61, 74, 20, 33] # SQLite format 3
     -
+      title: "Make a search with a dictionary"
       mod: search.Dictionary
       args:
         dictionary:
@@ -28,6 +31,7 @@ search:
           - 'cp866'
       sub:
         -
+          title: "SQLite database extract"
           mod: file.type.SqliteDatabase
           extract:
             columns: # If no "result" value is provided, all variants are included
