@@ -1,5 +1,5 @@
 from kernel.config import Config
-import json
+import jsonpickle
 
 class Result:
     def __init__(self, config: Config):
@@ -17,4 +17,4 @@ class Result:
         self.result = []
 
     def get_json(self):
-        return json.dumps(self, default=lambda ob: ob.__dict__, sort_keys=True)
+        return jsonpickle.encode(self.__dict__)
