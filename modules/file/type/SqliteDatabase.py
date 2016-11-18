@@ -111,12 +111,32 @@ class SqliteDatabase(AbstractModule):
                     # ToDo: Fetch only matched data, not all data
                     for row in result_data:
                         row_data = []
+                        found_data = False
+
+                        # Trying to find if there is
+                        if 'result' in self.extract['columns']:
+                            for c in result_columns:
+                                if found_data:
+                                    break
+
+                                for file_data_elem in collected_file_data:
+                                    if str(file_data_elem).lower() in str(row[c]).lower():
+                                        found_data = True
+                                        break
+
+                            if not found_data:
+                                continue
+
                         for c in export_columns:
                             row_data.append(row[c])
 
+                        if len(row_data) == 0:
+                            continue
+
                         export_data.append(row_data)
 
-                    tables[table[0]] = (export_columns, export_data)
+                    if len(export_data) > 0:
+                        tables[table[0]] = (export_columns, export_data)
             db.close()
 
             if len(tables) > 0:

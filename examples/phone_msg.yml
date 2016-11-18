@@ -30,7 +30,7 @@ search:
         -
           mod: file.type.SqliteDatabase
           extract:
-            columns:
+            columns: # If no "result" value is provided, all variants are included
               - result # Columns where evidence were found (from parent Dictionary module)
               - timestamps # Possible timestamp values
               - id # Fields which might be identifiers - contain "id" keyword
@@ -38,6 +38,6 @@ search:
             order:
               timestamps: DESC
             result:
-              - data # Fetch data which were 
+              - data # Fetch data which were
     -
       mod: file.Hash
