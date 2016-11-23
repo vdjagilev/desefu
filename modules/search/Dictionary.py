@@ -62,24 +62,17 @@ class Dictionary(AbstractModule):
                 file_encoding = None
                 file_content = None
 
-                for enc in self.encoding_list:
-                    Output.log("Trying file \"%s\" decode as \"%s\"" % (f, enc))
+                #for enc in self.encoding_list:
+                #    Output.log("Trying file \"%s\" decode as \"%s\"" % (f, enc))
 
-                    try:
-                        file_content = open(f, 'r', encoding=enc).read()
-                    except UnicodeDecodeError as e:
-                        Output.log("Could not decode file \"%s\" in unicode" % f)
-                        continue
-                    except Exception as e:
-                        Output.err("File \"%s\" could not be opened: %s" % (f, e))
-                        Kernel.end()
-
-                    file_encoding = enc
-
-                    if file_content:
-                        break
+                try:
+                    file_content = open(f, 'rb').read()
+                except Exception as e:
+                    Output.err("File \"%s\" could not be opened: %s" % (f, e))
+                    Kernel.end()
 
                 if not file_content or len(file_content) == 0:
+                    Output.log("A file \"%s\" is empty. Skipping it" % f)
                     continue
 
                 for line in self.dict_words[dictionary]:
