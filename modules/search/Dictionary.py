@@ -76,20 +76,28 @@ class Dictionary(AbstractModule):
                     continue
 
                 for line in self.dict_words[dictionary]:
-                    if file_content.lower().find(line.lower()) != -1:
-                        if f not in self.files_criteria:
-                            self.files_criteria.append(f)
+                    if f in self.data.keys():
+                        if line in self.data[f]:
+                            continue
 
-                        # Data collection part, which is responsible for collecting data.
-                        # For each file there is a set of words, which were found in
-                        # that file. In this case do_filter_files() function does
-                        # do_collect_data(), but that is needed for optimization
-                        # in order to avoid file content search procedure again
-                        try:
-                            self.data[f]
-                        except KeyError:
-                            self.data[f] = []
+                    for enc in self.encoding_list:
+                        if file_content.decode(enc, 'ignore').lower().find(line.lower()) != -1:
+                            if f not in self.files_criteria:
+                                self.files_criteria.append(f)
 
-                        self.data[f].append(line)
+                            # Data collection part, which is responsible for collecting data.
+                            # For each file there is a set of words, which were found in
+                            # that file. In this case do_filter_files() function does
+                            # do_collect_data(), but that is needed for optimization
+                            # in order to avoid file content search procedure again
+                            try:
+                                self.data[f]
+                            except KeyError:
+                                self.data[f] = []
+
+                            if line in self.data[f]:
+                                continue
+
+                            self.data[f].append(line)
 
         self.files = self.files_criteria
