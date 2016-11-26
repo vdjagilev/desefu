@@ -53,9 +53,13 @@ class Kernel:
     @staticmethod
     def end():
         Output.do("Program end", result=OutputResult.Info)
-        if Kernel.options.save_output and Output.file_resource:
-            Output.log("Closing file with output")
-            Output.file_resource.close()
+        try:
+            if Kernel.options.save_output and Output.file_resource:
+                Output.log("Closing file with output")
+                Output.file_resource.close()
+        except:
+            pass
+            
         sys.exit()
 
     @staticmethod
