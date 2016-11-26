@@ -53,7 +53,8 @@ class Output:
         message_result = '%s%s %s' % (message_type, date_time, message)
 
         if Output.log_file:
-            Output.file_resource.write(message_result + '\n')
+            message_result_text = '[%s]%s %s' % (result[0], date_time, message)
+            Output.file_resource.write(message_result_text + '\n')
 
         if ret:
             return message_result

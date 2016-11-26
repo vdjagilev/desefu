@@ -71,17 +71,13 @@ if __name__ == '__main__':
         Kernel.exec_search(module_chain_list)
     else:
         Output.fail("Search has been cancelled")
+        Kernel.end()
 
     result_filename = 'result_%s.json' % strftime('%d%m%Y_%H%M%S', localtime())
     result_file = open(result_filename, mode='w', encoding='utf-8')
     Output.do("Writing result data to %s" % result_filename)
     result_file.write(result.get_json())
     result_file.close()
+
     # Program END
-
-    # Closing file
-    if options.save_output and Output.file_resource:
-        Output.log("Closing file with output")
-        Output.file_resource.close()
-
     Kernel.end()

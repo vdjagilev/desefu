@@ -8,9 +8,12 @@ from kernel.module_chain import ModuleChain
 from kernel.output import Output, OutputResult
 from modules import AbstractModule
 
+from time import strftime, localtime
+
 
 class Kernel:
     result = None
+    options = None
 
     @staticmethod
     def start(_version, _choices):
@@ -23,7 +26,7 @@ class Kernel:
                           help="Result is being shown in specific format %s" % _choices)
         parser.add_option("--date-format", default=None,
                           help="Date format which is used for all output which is made to console, all required symbols can be found at https://docs.python.org/3.5/library/time.html#time.strftime. \nBy default locale appropriate time representation is done.")
-        parser.add_option("--save-output", default=None, help="Store output in a log file")
+        parser.add_option("--save-output", action="store_true", default=False, help="Store output in a log file")
         parser.add_option("--module-info", default=None, help="Prints out module information")
 
         (options, args) = parser.parse_args()
@@ -32,8 +35,8 @@ class Kernel:
         Output.quiet = options.quiet
         Output.current_format = options.format
 
-        if options.save_output is not None:
-            Output.log_file = options.save_output
+        if options.save_output:
+            Output.log_file = 'result_%s.log' % strftime('%d%m%Y_%H%M%S', localtime())
 
         if Output.current_format is not None:
             Output.quiet = True
@@ -43,11 +46,16 @@ class Kernel:
 
         Output.do("Starting Desefu version %s" % _version)
 
+        Kernel.options = options
+
         return options, args
 
     @staticmethod
     def end():
         Output.do("Program end", result=OutputResult.Info)
+        if Kernel.options.save_output and Output.file_resource:
+            Output.log("Closing file with output")
+            Output.file_resource.close()
         sys.exit()
 
     @staticmethod
