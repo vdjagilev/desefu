@@ -75,7 +75,7 @@ class SqliteDatabase(AbstractModule):
                     cursor = db.execute('SELECT * FROM %s;' % table[0])
                     result = cursor.fetchall()
                 except OperationalError:
-                    Output.warn("Could not fetch table info from table \"%s\"" % table[0])
+                    Output.warn("Could not fetch table info from table \"%s\" in \"%s\"" % (table[0], db_file))
                     continue
 
                 table_columns = [desc[0] for desc in cursor.description]
