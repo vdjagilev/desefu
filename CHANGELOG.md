@@ -1,6 +1,12 @@
 Changelog
 =========
 
+# 0.3
+
+* [Fix]: Output log file fixes
+* [CI]: Python 3.4 continuous integration result
+* SqliteDatabase module: More verbose output if table information could not be fetched
+
 # 0.2
 
 * Dictionary module fixes. Perform a search in different encoding.

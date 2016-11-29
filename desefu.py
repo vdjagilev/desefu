@@ -10,7 +10,7 @@ from kernel.result import Result
 
 from time import strftime, localtime
 
-_version = "0.2"
+_version = "0.3"
 _choices = ['json', 'xml', 'csv', 'html']
 
 # Initializing colorama
