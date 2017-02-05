@@ -11,7 +11,6 @@ from kernel.result import Result
 from time import strftime, localtime
 
 _version = "0.3"
-_choices = ['json', 'xml', 'csv', 'html']
 
 # Initializing colorama
 # Colors will be available in Windows CLI
@@ -19,7 +18,7 @@ init()
 
 # Main method
 if __name__ == '__main__':
-    (options, args) = Kernel.start(_version, _choices)
+    (options, args) = Kernel.start(_version)
 
     if options.module_info:
         Output.do("Getting information about module %s" % options.module_info)
