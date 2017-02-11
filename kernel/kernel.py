@@ -22,8 +22,6 @@ class Kernel:
                           help="Enable logging, which prints additional information the program is working right now")
         parser.add_option("-q", "--quiet", action="store_true", default=False,
                           help="Disable any output, except formatted one")
-        parser.add_option("--date-format", default=None,
-                          help="Date format which is used for all output which is made to console, all required symbols can be found at https://docs.python.org/3.5/library/time.html#time.strftime. \nBy default locale appropriate time representation is done.")
         parser.add_option("--save-output", action="store_true", default=False, help="Store output in a log file")
         parser.add_option("--module-info", default=None, help="Prints out module information")
         parser.add_option("--check", action="store_true", default=False, help="Check dependencies for modules")
@@ -36,10 +34,9 @@ class Kernel:
         if options.save_output:
             Output.log_file = 'result_%s.log' % strftime('%d%m%Y_%H%M%S', localtime())
 
-        if options.date_format is not None:
-            Output.date_format = options.date_format
-
+        Output.date_format = "%x %X %z"
         Output.do("Starting Desefu version %s" % _version)
+        Output.date_format = "%X"
 
         Kernel.options = options
 
@@ -52,6 +49,7 @@ class Kernel:
 
     @staticmethod
     def end():
+        Output.date_format = "%x %X %z"
         Output.do("Program end", result=OutputResult.Info)
         try:
             if Kernel.options.save_output and Output.file_resource:

@@ -15,8 +15,7 @@ class OutputResult:
 class Output:
     logging = False
     quiet = False
-    current_format = None
-    date_format = "%x %X %z"
+    date_format = "%X"
     log_file = None
     file_resource = None
 
