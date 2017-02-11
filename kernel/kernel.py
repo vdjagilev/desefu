@@ -34,9 +34,7 @@ class Kernel:
         if options.save_output:
             Output.log_file = 'result_%s.log' % strftime('%d%m%Y_%H%M%S', localtime())
 
-        Output.date_format = "%x %X %z"
-        Output.do("Starting Desefu version %s" % _version)
-        Output.date_format = "%X"
+        Output.do("Starting Desefu version %s" % _version, use_time=True)
 
         Kernel.options = options
 
@@ -49,8 +47,7 @@ class Kernel:
 
     @staticmethod
     def end():
-        Output.date_format = "%x %X %z"
-        Output.do("Program end", result=OutputResult.Info)
+        Output.do("Program end", use_time=True)
         try:
             if Kernel.options.save_output and Output.file_resource:
                 Output.log("Closing file with output")

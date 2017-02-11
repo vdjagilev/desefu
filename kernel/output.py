@@ -15,28 +15,28 @@ class OutputResult:
 class Output:
     logging = False
     quiet = False
-    date_format = "%X"
+    date_format = "%x %X %z"
     log_file = None
     file_resource = None
 
     @staticmethod
-    def ok(message: str, use_time: bool = True):
+    def ok(message: str, use_time: bool = False):
         Output.do(message, OutputResult.OK, use_time)
 
     @staticmethod
-    def fail(message: str, use_time: bool = True):
+    def fail(message: str, use_time: bool = False):
         Output.do(message, OutputResult.Fail, use_time)
 
     @staticmethod
-    def warn(message: str, use_time: bool = True):
+    def warn(message: str, use_time: bool = False):
         Output.do(message, OutputResult.Warn, use_time)
 
     @staticmethod
-    def err(message: str, use_time: bool = True):
+    def err(message: str, use_time: bool = False):
         Output.do(message, OutputResult.Error, use_time)
 
     @staticmethod
-    def do(message: str, result: tuple = OutputResult.Info, use_time: bool = True, ret: bool = False):
+    def do(message: str, result: tuple = OutputResult.Info, use_time: bool = False, ret: bool = False):
         if Output.log_file and Output.file_resource is None:
             Output.file_resource = open(Output.log_file, 'w+')
 
@@ -46,7 +46,7 @@ class Output:
         date_time = ""
 
         if use_time:
-            date_time = '[%s] ' % strftime(Output.date_format, localtime())
+            date_time = '[%s]' % strftime(Output.date_format, localtime())
 
         message_type = '[%s]' % colored(result[0], result[1], attrs=result[2])
         message_result = '%s%s %s' % (message_type, date_time, message)
