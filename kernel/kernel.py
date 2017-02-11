@@ -26,6 +26,7 @@ class Kernel:
                           help="Date format which is used for all output which is made to console, all required symbols can be found at https://docs.python.org/3.5/library/time.html#time.strftime. \nBy default locale appropriate time representation is done.")
         parser.add_option("--save-output", action="store_true", default=False, help="Store output in a log file")
         parser.add_option("--module-info", default=None, help="Prints out module information")
+        parser.add_option("--check", action="store_true", default=False, help="Check dependencies for modules")
 
         (options, args) = parser.parse_args()
 
@@ -43,6 +44,11 @@ class Kernel:
         Kernel.options = options
 
         return options, args
+
+    @staticmethod
+    def check() -> bool:
+        Output.do("Perform general check")
+        return False
 
     @staticmethod
     def end():

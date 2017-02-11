@@ -20,6 +20,16 @@ init()
 if __name__ == '__main__':
     (options, args) = Kernel.start(_version)
 
+    if options.check:
+        check_status = Kernel.check()
+
+        if check_status:
+            Output.ok("Check status OK")
+        else:
+            Output.fail("Check status FAIL")
+
+        Kernel.end()
+
     if options.module_info:
         Output.do("Getting information about module %s" % options.module_info)
         mod = Kernel.get_module('modules', options.module_info)
