@@ -23,7 +23,7 @@ def test_get_module():
         assert True
 
 def test_check():
-    Kernel.check(os.getcwd() + os.sep + "test_modules")
+    Kernel.check("modules")
 
 def test_main_exec_search():
     config = Config('./examples/phone_msg.yml', './tests/modules/file/extension_mocks')
