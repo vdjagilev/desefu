@@ -2,8 +2,8 @@ from modules import AbstractModule
 from kernel.output import Output, OutputResult
 from os.path import splitext
 
-class Extension(AbstractModule):
 
+class Extension(AbstractModule):
     def check(self):
         return True
 

@@ -1,8 +1,9 @@
 # Kernel module
 # =============
 import importlib
-import sys
+import sys, os
 from optparse import OptionParser
+from os.path import basename, join, splitext
 
 from kernel.module_chain import ModuleChain
 from kernel.output import Output, OutputResult
@@ -41,9 +42,27 @@ class Kernel:
         return options, args
 
     @staticmethod
-    def check() -> bool:
-        Output.do("Perform general check")
-        return False
+    def check(check_path):
+        Output.do("Perform general module check")
+
+        for root, dirs, files in os.walk(check_path):
+            path = root.split(os.sep)
+
+            if '__pycache__' in path:
+                continue
+
+            for file in files:
+                if file != '__init__.py':
+                    module_name = splitext(basename(join(root, file)))[0]
+                    full_name = join(os.sep.join(path[1:]), module_name).replace(os.sep, ".")
+
+                    module = Kernel.get_module(check_path, full_name)
+                    check_result = module.check()
+
+                    if check_result:
+                        Output.ok(full_name)
+                    else:
+                        Output.fail(full_name)
 
     @staticmethod
     def end():
